@@ -88,6 +88,15 @@
     <script>
       let form = document.querySelector("form");
 
+      // STEP 4 - Custom error class (extends the built-in Error)
+
+      class CalculatorError extends Error {
+        constructor(message) {
+          super(message);
+          this.name = "CalculatorError";
+        }
+      }
+
       form.addEventListener("submit", (e) => {
         e.preventDefault();
         let output = document.querySelector("output");
@@ -95,25 +104,23 @@
         let secondNum = document.querySelector("#second-num").value;
         let operator = document.querySelector("#operator").value;
 
-        // STEP 3 - try / catch / finally + throw in the calculator
-
         try {
-          // Validate first and THROW if something is wrong. More realistic
-          // than just running code we know will break.
           if (firstNum.trim() === "" || secondNum.trim() === "") {
-            throw new Error("Both number fields must be filled in.");
+            throw new CalculatorError("Both number fields must be filled in.");
+          }
+          if (isNaN(Number(firstNum)) || isNaN(Number(secondNum))) {
+            throw new CalculatorError("Inputs must be valid numbers.");
           }
           if (operator === "/" && Number(secondNum) === 0) {
-            throw new Error("Cannot divide by zero.");
+            throw new CalculatorError("Cannot divide by zero.");
           }
 
           output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
         } catch (err) {
-          // Runs when anything in the try block throws.
+          // Catches our CalculatorError OR a built-in error (e.g. SyntaxError).
           console.error(`${err.name}: ${err.message}`);
           output.innerHTML = `Error: ${err.message}`;
         } finally {
-          // ALWAYS runs, error or not.
           console.log("Calculation attempt finished.");
         }
       });
