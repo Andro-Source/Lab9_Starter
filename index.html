@@ -1,108 +1,199 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lab 9</title>
 
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lab 9</title>
+    <style>
+      button {
+        margin: 3px;
+      }
 
-  <style>
-    button {
-      margin: 3px;
-    }
+      button:hover {
+        cursor: pointer;
+      }
 
-    button:hover {
-      cursor: pointer;
-    }
+      #first-num,
+      #second-num {
+        width: 60px;
+      }
 
-    #first-num,
-    #second-num {
-      width: 60px;
-    }
+      output {
+        border: 1px solid gray;
+        display: block;
+        height: 18px;
+        margin-top: 5px;
+        padding: 5px;
+        width: 240px;
+      }
 
-    output {
-      border: 1px solid gray;
-      display: block;
-      height: 18px;
-      margin-top: 5px;
-      padding: 5px;
-      width: 240px;
-    }
+      main {
+        width: 800px;
+      }
 
-    main {
-      width: 800px;
-    }
+      #error-btns {
+        column-gap: 5px;
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 30px;
+        row-gap: 5px;
+      }
 
-    #error-btns {
-      column-gap: 5px;
-      display: flex;
-      flex-wrap: wrap;
-      margin-top: 30px;
-      row-gap: 5px;
-    }
+      #error-btns > * {
+        padding: 8px 2px;
+        width: 122px;
+      }
+    </style>
+  </head>
 
-    #error-btns>* {
-      padding: 8px 2px;
-      width: 122px;
-    }
-  </style>
-</head>
+  <body>
+    <main>
+      <form>
+        <fieldset>
+          <legend>Error Calculator</legend>
+          <input name="first-num" id="first-num" />
+          <select name="operator" id="operator">
+            <option>+</option>
+            <option>-</option>
+            <option>*</option>
+            <option>/</option>
+          </select>
+          <input name="second-num" id="second-num" />
+          <button id="calculate">Calculate</button>
+          <br />
+          <output></output>
+        </fieldset>
+      </form>
+      <section id="error-btns">
+        <button>Console Log</button>
+        <button>Console Error</button>
+        <button>Console Count</button>
+        <button>Console Warn</button>
+        <button>Console Assert</button>
+        <button>Console Clear</button>
+        <button>Console Dir</button>
+        <button>Console dirxml</button>
+        <button>Console Group Start</button>
+        <button>Console Group End</button>
+        <button>Console Table</button>
+        <button>Start Timer</button>
+        <button>End Timer</button>
+        <button>Console Trace</button>
+        <button>Trigger a Global Error</button>
+      </section>
+    </main>
 
-<body>
-  <main>
-    <form>
-      <fieldset>
-        <legend>Error Calculator</legend>
-        <input name="first-num" id="first-num" />
-        <select name="operator" id="operator">
-          <option>+</option>
-          <option>-</option>
-          <option>*</option>
-          <option>/</option>
-        </select>
-        <input name="second-num" id="second-num" />
-        <button id="calculate">Calculate</button>
-        <br />
-        <output></output>
-      </fieldset>
-    </form>
+    <script>
+      let form = document.querySelector("form");
 
-    <section id="error-btns">
-      <button>Console Log</button>
-      <button>Console Error</button>
-      <button>Console Count</button>
-      <button>Console Warn</button>
-      <button>Console Assert</button>
-      <button>Console Clear</button>
-      <button>Console Dir</button>
-      <button>Console dirxml</button>
-      <button>Console Group Start</button>
-      <button>Console Group End</button>
-      <button>Console Table</button>
-      <button>Start Timer</button>
-      <button>End Timer</button>
-      <button>Console Trace</button>
-      <button>Trigger a Global Error</button>
-    </section>
-  </main>
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        let output = document.querySelector("output");
+        let firstNum = document.querySelector("#first-num").value;
+        let secondNum = document.querySelector("#second-num").value;
+        let operator = document.querySelector("#operator").value;
+        output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      });
 
-  <script>
-    let form = document.querySelector('form');
-    form.addEventListener('submit', e => {
-      e.preventDefault();
-      let output = document.querySelector('output');
-      let firstNum = document.querySelector('#first-num').value;
-      let secondNum = document.querySelector('#second-num').value;
-      let operator = document.querySelector('#operator').value;
-      output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
-    });
+      let errorBtns = Array.from(
+        document.querySelectorAll("#error-btns > button"),
+      );
 
-    let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
+      // Sample data reused across several demos
+      const people = [
+        { name: "Ada", role: "Engineer" },
+        { name: "Linus", role: "Maintainer" },
+        { name: "Grace", role: "Admiral" },
+      ];
 
-    // Start your code here
-    // You may move this JS to another file if you wish
-  </script>
-</body>
+      // ============================================================
+      // STEP 2 - Wire each button to a console method
+      // ============================================================
 
+      // 0 - console.log
+      errorBtns[0].addEventListener("click", () => {
+        console.log("This is a console.log message.", people[0]);
+      });
+
+      // 1 - console.error
+      errorBtns[1].addEventListener("click", () => {
+        console.error("This is a console.error message (shows in red).");
+      });
+
+      // 2 - console.count
+      errorBtns[2].addEventListener("click", () => {
+        console.count("Count button pressed");
+      });
+
+      // 3 - console.warn
+      errorBtns[3].addEventListener("click", () => {
+        console.warn("This is a console.warn message (shows in yellow).");
+      });
+
+      // 4 - console.assert (only logs when the condition is FALSE)
+      errorBtns[4].addEventListener("click", () => {
+        const x = 5;
+        console.assert(x > 10, "Assertion failed: x is not greater than 10", {
+          x,
+        });
+      });
+
+      // 5 - console.clear
+      errorBtns[5].addEventListener("click", () => {
+        console.clear();
+      });
+
+      // 6 - console.dir (DOM node as an expandable JS object)
+      errorBtns[6].addEventListener("click", () => {
+        console.dir(document.querySelector("#error-btns"));
+      });
+
+      // 7 - console.dirxml (same node as an HTML/XML tree)
+      errorBtns[7].addEventListener("click", () => {
+        console.dirxml(document.querySelector("#error-btns"));
+      });
+
+      // 8 - console.group
+      errorBtns[8].addEventListener("click", () => {
+        console.group("My Group");
+        console.log("This log is INSIDE the group.");
+        console.log('So is this. Press "Console Group End" to close it.');
+      });
+
+      // 9 - console.groupEnd
+      errorBtns[9].addEventListener("click", () => {
+        console.log("Closing the group now.");
+        console.groupEnd();
+      });
+
+      // 10 - console.table
+      errorBtns[10].addEventListener("click", () => {
+        console.table(people);
+      });
+
+      // 11 - console.time
+      errorBtns[11].addEventListener("click", () => {
+        console.time("myTimer");
+        console.log('Timer started. Press "End Timer" to see elapsed time.');
+      });
+
+      // 12 - console.timeEnd
+      errorBtns[12].addEventListener("click", () => {
+        console.timeEnd("myTimer");
+      });
+
+      // 13 - console.trace
+      errorBtns[13].addEventListener("click", () => {
+        function inner() {
+          console.trace("Trace from inner()");
+        }
+        function outer() {
+          inner();
+        }
+        outer();
+      });
+    </script>
+  </body>
 </html>
