@@ -220,6 +220,22 @@
         }
         outer();
       });
+
+      // STEP 5 - Global (uncaught) error handler
+      window.onerror = (message, source, lineno, colno, error) => {
+        console.log("Global error caught by window.onerror:");
+        console.log("  message:", message);
+        console.log("  line:", lineno, " col:", colno);
+
+        return true; // tells the browser the error was handled
+      };
+
+      // 14 - Trigger a Global Error (call something that doesn't exist).
+      // Throws a ReferenceError OUTSIDE any try/catch, so it bubbles up
+      // to window.onerror above.
+      errorBtns[14].addEventListener("click", () => {
+        thisFunctionDoesNotExist();
+      });
     </script>
   </body>
 </html>
