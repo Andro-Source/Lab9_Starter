@@ -94,7 +94,28 @@
         let firstNum = document.querySelector("#first-num").value;
         let secondNum = document.querySelector("#second-num").value;
         let operator = document.querySelector("#operator").value;
-        output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+
+        // STEP 3 - try / catch / finally + throw in the calculator
+
+        try {
+          // Validate first and THROW if something is wrong. More realistic
+          // than just running code we know will break.
+          if (firstNum.trim() === "" || secondNum.trim() === "") {
+            throw new Error("Both number fields must be filled in.");
+          }
+          if (operator === "/" && Number(secondNum) === 0) {
+            throw new Error("Cannot divide by zero.");
+          }
+
+          output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+        } catch (err) {
+          // Runs when anything in the try block throws.
+          console.error(`${err.name}: ${err.message}`);
+          output.innerHTML = `Error: ${err.message}`;
+        } finally {
+          // ALWAYS runs, error or not.
+          console.log("Calculation attempt finished.");
+        }
       });
 
       let errorBtns = Array.from(
@@ -108,9 +129,7 @@
         { name: "Grace", role: "Admiral" },
       ];
 
-      // ============================================================
       // STEP 2 - Wire each button to a console method
-      // ============================================================
 
       // 0 - console.log
       errorBtns[0].addEventListener("click", () => {
